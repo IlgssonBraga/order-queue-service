@@ -1,4 +1,6 @@
+import { OrderService } from "../../services/Order";
 import createQueueConnection from "./createQueueConnection";
+const orderService  = new OrderService
 
 
 export default async function consumeQueue(queue: string | undefined) {
@@ -6,10 +8,9 @@ export default async function consumeQueue(queue: string | undefined) {
     await channel.assertQueue(queue, { durable: false });
     await channel.consume(queue, async (msg: any) => {
       const content = msg.content.toString();
-      // const orderData = JSON.parse(content);
-      // await orderController.processOrder(orderData);
-      console.log(" [x] Received %s", content);
+      await orderService.createOrder(JSON.parse(content));
       channel.ack(msg);
+      
     },
     {
       noAck: false,
