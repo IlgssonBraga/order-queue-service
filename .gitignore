@@ -1,3 +1,4 @@
 /consumer/node_modules
 /producer/node_modules
-.env
+/consumer/.env
+/producer/.env
